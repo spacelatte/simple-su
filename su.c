@@ -1,8 +1,12 @@
 
 #include <stdio.h>
+#include <errno.h>
+#include <error.h>
 #include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
 #include <sys/stat.h>
+#include <sys/types.h>
 
 int main(int argc, char **argv) {
 	/*
@@ -15,11 +19,15 @@ int main(int argc, char **argv) {
 	stat(argv[0],&fstat);
 	int retval;
 	if(argc < 2) {
-		retval = setuid(fstat.st_uid);
+		retval = seteuid(fstat.st_uid);
 	} else {
-		retval = setuid(atoi(argv[1]));
+		retval = seteuid(atoi(argv[1]));
 	}
-	//printf("result: %d\n", retval);
+	if(retval)
+		printf("result: %d\n", retval);
+		perror("setuid");
+		return 0;
+	}
 	if(argc < 3) {
 		execlp("sh", "$SHELL", NULL);
 		return 0;
