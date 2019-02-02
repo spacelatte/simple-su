@@ -26,12 +26,10 @@ int main(int argc, char **argv) {
 	if(retval)
 		printf("result: %d\n", retval);
 		perror("setuid");
-		return 0;
+		return retval;
 	}
 	if(argc < 3) {
-		execlp("sh", "$SHELL", NULL);
-		return 0;
+		return execlp("sh", "$SHELL", NULL);
 	}
-	execvp(argv[2], &(argv[2]));
-	return 0;
+	return execvp(argv[2], &(argv[2]));
 }
