@@ -6,7 +6,7 @@ clean:
 	rm -f su
 
 su: su.c
-	docker run --rm -t -v $$(pwd):/data pvtmert/python:3.5 arm-linux-gnueabi-gcc -static -o /data/$@ /data/$<
+	docker run --rm -t -v $$(pwd):/data pvtmert/gcc-arm:gnueabi arm-linux-gnueabi-gcc -static -o /data/$@ /data/$<
 
 adb: su
 	adb push $< /data/local/tmp
