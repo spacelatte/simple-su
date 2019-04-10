@@ -23,7 +23,7 @@ int main(int argc, char **argv) {
 	} else {
 		retval = seteuid(atoi(argv[1]));
 	}
-	if(retval)
+	if(retval) {
 		printf("result: %d\n", retval);
 		perror("setuid");
 		return retval;
