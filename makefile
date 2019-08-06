@@ -19,3 +19,6 @@ adb: su
 	adb shell /system/su 0 ls -la /system/su
 	adb shell /system/su 0 /system/bin/id
 	adb shell rm /data/local/tmp/su
+
+self: su.c
+	cc -o $@ $(CFLAGS) $<

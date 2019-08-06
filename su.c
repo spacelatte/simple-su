@@ -1,7 +1,7 @@
 
 #include <stdio.h>
 #include <errno.h>
-#include <error.h>
+//#include <error.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
@@ -17,19 +17,13 @@ int main(int argc, char **argv) {
 	*/
 	struct stat fstat;
 	stat(argv[0],&fstat);
-	int retval;
-	if(argc < 2) {
-		retval = seteuid(fstat.st_uid);
-	} else {
-		retval = seteuid(atoi(argv[1]));
-	}
+	int id = (argc < 2) ? fstat.st_uid : atoi(argv[1]);
+	int retval = setuid(id);
 	if(retval) {
 		printf("result: %d\n", retval);
 		perror("setuid");
 		return retval;
 	}
-	if(argc < 3) {
-		return execlp("sh", "$SHELL", NULL);
-	}
-	return execvp(argv[2], &(argv[2]));
+	seteuid(id);
+	return (argc < 3) ? execlp("sh", "rt", NULL) : execvp(argv[2], &(argv[2]));
 }
